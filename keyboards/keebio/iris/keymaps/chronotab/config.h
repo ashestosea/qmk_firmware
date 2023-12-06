@@ -24,5 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define RGBLIGHT_LIMIT_VAL 120
 #define RGBLIGHT_SPLIT
 
+#define UNICODE_SELECTED_MODES UC_LNX
+
 #define VIA_QMK_RGBLIGHT_DISABLE
 #define VIA_CUSTOM_LIGHTING_DISABLE
