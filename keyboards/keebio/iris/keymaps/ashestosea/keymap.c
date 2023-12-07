@@ -136,14 +136,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 }
 
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
-    HSV hsv = {0, 0, 0};
-    if (layer_state_is(_QGMLWY)) {
-        hsv = (HSV){175, 255, 120}; // purple
-    } else {
-        hsv = (HSV){0, 255, 120}; // red
+    if (!layer_state_is(_QWERTY)) {
+        return false;
     }
 
-    RGB rgb = hsv_to_rgb(hsv);
+    RGB rgb = hsv_to_rgb((HSV){0, 255, 120}); // red
 
     // Left inside thumb
     rgb_matrix_set_color(27, rgb.r, rgb.g, rgb.b);
