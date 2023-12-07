@@ -64,9 +64,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      _______, _______, _______, _______, UC(0x25CA),KC_GRV,                           RGB_HUD, RGB_SPD, RGB_VAD, RGB_SPI, RGB_SAD, _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, _______, _______, _______, _______, _______, KC_F14,           RGB_TOG,  _______, _______, _______, _______, KC_BSLS ,_______,
+     _______, _______, _______, _______, _______, _______, KC_F14,           RGB_TOG,  _______, _______, _______, _______, KC_BSLS ,EE_CLR,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                    KC_LALT, _______, KC_RALT,                   DF(QWERTY), DF(QGMLWY), _______
+                                    KC_LALT, _______, KC_RALT,                   QWERTY,  QGMLWY,  _______
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 };
@@ -100,6 +100,20 @@ const key_override_t **key_overrides = (const key_override_t *[]){
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
+    case QGMLWY:
+      if (record->event.pressed) {
+          layer_on(_QGMLWY);
+          layer_off(_QWERTY);
+      }
+      return false;
+      break;
+    case QWERTY:
+      if (record->event.pressed) {
+          layer_on(_QWERTY);
+          layer_off(_QGMLWY);
+      }
+      return false;
+      break;
     case SPCFN:
       if (record->event.pressed) {
         layer_on(_SPCFN);
@@ -117,5 +131,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return false;
       break;
   }
+
   return true;
+}
+
+bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+    HSV hsv = {0, 0, 0};
+    if (layer_state_is(_QGMLWY)) {
+        hsv = (HSV){175, 255, 120}; // purple
+    } else {
+        hsv = (HSV){0, 255, 120}; // red
+    }
+
+    RGB rgb = hsv_to_rgb(hsv);
+
+    // Left inside thumb
+    rgb_matrix_set_color(27, rgb.r, rgb.g, rgb.b);
+    // Right inside thumb
+    rgb_matrix_set_color(61, rgb.r, rgb.g, rgb.b);
+
+    return false;
 }
