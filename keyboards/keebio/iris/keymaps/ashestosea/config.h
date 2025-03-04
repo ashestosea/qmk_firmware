@@ -34,3 +34,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define SPLIT_TRANSPORT_MIRROR
 #define SPLIT_LAYER_STATE_ENABLE
+
+#define TAIPO_TAP_TIMEOUT 150
+#define ONESHOT_TIMEOUT 500
